@@ -61,12 +61,23 @@ def percentWeightH2(smiles_dehydrogenated,smiles_hydrogenated):
 
 # Streamlit UI
 st.title('∆H Predictor for hydrogenation reactions')
-st.write('This app predicts the delta H for hydrogenation reactions based on SMILES strings.')
+st.write('This app predicts ∆H for hydrogenation reactions based on SMILES strings.')
 #st.write('All units are given in kJ/mol H2')
 st.markdown('All units are given in kJ/mol H<sub>2</sub>', unsafe_allow_html=True)
 st.markdown('Random Forest Model, trained on G4MP2 data of 10k reactions from QM9-LOHC dataset (up to 9 heavy atoms)')
+st.markdown('**Model performance**')
+mae = 4.665274999711585
+rmsd = 7.346104967487992
+r_squared = 0.9346928425199256
+
+st.markdown(f"""
+- **Mean Absolute Error (MAE):** {mae:.2f}
+- **Root Mean Square Deviation (RMSD):** {rmsd:.2f}
+- **R-squared:** {r_squared:.2f}
+""")
+
 # User input for SMILES string
-user_input_smiles = st.text_input("Enter SMILES string:", "c1cc(C)ccc1")
+user_input_smiles = st.text_input("Enter SMILES string:", "C1=CC2=CON=C2C=C1")
 
 # Button to make predictions
 if st.button('Predict ∆H'):
@@ -92,17 +103,27 @@ if st.button('Predict ∆H'):
         molecule1_img = mol_to_image_base64(user_input_smiles)
         molecule2_img = mol_to_image_base64(saturated_smiles)
 
-### working ++
         col1, col2 = st.columns(2)
+
         with col1:
             if molecule1_img is not None:
-                st.image(Image.open(io.BytesIO(base64.b64decode(molecule1_img))), caption="Unsaturated")
+                # Display the image
+                st.image(Image.open(io.BytesIO(base64.b64decode(molecule1_img))), use_column_width=True)
+                # Custom caption with HTML for style for the first molecule
+                st.markdown("""
+                <p style='text-align: center; color: #ef9007; font-size: 25px; font-weight: bold;'>Unsaturated</p>
+                """, unsafe_allow_html=True)
         with col2:
             if molecule2_img is not None:
-                st.image(Image.open(io.BytesIO(base64.b64decode(molecule2_img))), caption="Saturated")
-### working --
+                # Display the image
+                st.image(Image.open(io.BytesIO(base64.b64decode(molecule2_img))), use_column_width=True)
+                # Custom caption with HTML for style for the second molecule
+                st.markdown("""
+                <p style='text-align: center; color: #800080; font-size: 25px; font-weight: bold;'>Saturated</p>
+                """, unsafe_allow_html=True)
 
     else:
         st.write("Invalid SMILES string. Please enter a valid one.")
-    
+
+
 
