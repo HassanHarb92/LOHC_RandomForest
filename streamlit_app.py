@@ -60,9 +60,24 @@ def percentWeightH2(smiles_dehydrogenated,smiles_hydrogenated):
     return pH2
 
 # Streamlit UI
-st.title('∆H Predictor for hydrogenation reactions')
-st.write('This app predicts ∆H for hydrogenation reactions based on SMILES strings.')
+#st.title('∆H Predictor for hydrogenation reactions')
+#st.write('This app predicts ∆H for hydrogenation reactions based on SMILES strings.')
 #st.write('All units are given in kJ/mol H2')
+# Assuming the path to your logo image
+image_path = 'Logo.png'
+
+# Create a layout with 2 columns
+# Adjust the 'width' argument to control the space allocation
+col1, col2 = st.columns([1, 3])
+
+# First column for the logo image
+with col1:
+    st.image(image_path, width=190)  # Adjust width as needed
+with col2:
+    st.title('∆H Predictor for hydrogenation reactions')
+    st.write('This app predicts ∆H for hydrogenation reactions based on SMILES strings.')
+
+
 st.markdown('All units are given in kJ/mol H<sub>2</sub>', unsafe_allow_html=True)
 st.markdown('Random Forest Model, trained on G4MP2 data of 10k reactions from QM9-LOHC dataset (up to 9 heavy atoms)')
 st.markdown('**Model performance**')
